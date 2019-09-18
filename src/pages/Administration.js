@@ -1,52 +1,88 @@
 import React from "react";
 
-//import ClientsData from "../data/clients.json";
+import { getAllClients, createNewClient } from "../data/api";
 
 class Administration extends React.Component {
   state = {
     name: "",
     surname: "",
-    fullNames: []
+    selectedDoctor: "doctor1",
+    fullNames: [],
+    doctor1: [],
+    doctor2: []
   };
 
-  // onSaveClientsData = () => {
-  //   localStorage.setItem("clients", JSON.stringify(ClientsData));
-  //   console.log(ClientsData);
-  //   //a.data.doctor1.map(name => name.name)
-  // };
+  componentDidMount() {
+    this.getClientsData();
+  }
+
+  getClientsData = async () => {
+    const response = await getAllClients();
+
+    // this.setState({
+    //   doctor1: response.doctor1,
+    //   doctor2: response.doctor2
+    // });
+  };
+
+  onSaveClientsData = () => {
+    const { doctor1, doctor2 } = this.state;
+
+    localStorage.setItem("doctor1", JSON.stringify(doctor1));
+    localStorage.setItem("doctor2", JSON.stringify(doctor2));
+  };
 
   handleNameChange = event => {
-    console.log(event.target.value);
     this.setState({
       name: event.target.value
     });
-    //localStorage.setItem("name", event.target.value);
   };
 
   handleSurnameChange = event => {
-    console.log(event.target.value);
     this.setState({
       surname: event.target.value
     });
-    //localStorage.setItem("surname", event.target.value);
   };
 
-  onSubmitFullName = event => {
-    const person = {
-      name: this.state.name,
-      surname: this.state.surname
-    };
-    console.log(person);
-    localStorage.setItem("user", JSON.stringify(person));
+  handleSelectedDoctor = event => {
+    this.setState({
+      selectedDoctor: event.target.value
+    });
+  };
+
+  onSubmitNewClient = async () => {
+    const { name, surname, selectedDoctor } = this.state;
+    // const person = {
+    //   name: this.state.name,
+    //   surname: this.state.surname,
+    //   selectedDoctor: this.state.selectedDoctor
+    // };
+    const response = await createNewClient(name, surname, selectedDoctor);
+    console.log(response);
+    // localStorage.setItem("user", JSON.stringify(person));
   };
 
   render() {
     return (
       <div>
-        <input placeholder="name" onChange={this.handleNameChange} />
-        <input placeholder="surname" onChange={this.handleSurnameChange} />
-        <button onClick={this.onSubmitFullName}>Add client</button>
-
+        <select
+          onChange={this.handleSelectedDoctor}
+          value={this.state.selectedDoctor}
+        >
+          <option value="doctor1" defaultValue>
+            Doctor1
+          </option>
+          <option value="doctor2">Doctor2</option>
+        </select>
+        <label>
+          Name:
+          <input placeholder="name" onChange={this.handleNameChange} />
+        </label>
+        <label>
+          Surname:
+          <input placeholder="surname" onChange={this.handleSurnameChange} />
+        </label>
+        <button onClick={this.onSubmitNewClient}>Add client</button> <br />
         <button onClick={this.onSaveClientsData}>
           Save data to localStorage
         </button>

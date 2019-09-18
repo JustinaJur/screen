@@ -1,33 +1,38 @@
-{
-  "data": {
-    "doctor1": [
-      {
-        "id": 1,
-        "name": "Andrius",
-        "surname": "Adamkus"
-      },
-      {
-        "id": 2,
-        "name": "Jurgita",
-        "surname": "Babič"
-      },
-      {
-        "id": 3,
-        "name": "Povilas",
-        "surname": "Adamkus"
-      },
-      {
-        "id": 4,
-        "name": "Jurga",
-        "surname": "Babič"
-      }
-    ],
-    "doctor2": [
-      {
-        "id": 1,
-        "name": "Andrius",
-        "surname": "Adamkus"
-      }
-    ]
-  }
-}
+// {
+//   "data": {
+//     "doctor1": [
+//       {
+//         "id": 1,
+//         "name": "Andrius",
+//         "surname": "Adamkus",
+//         "service provided": "no"
+//       },
+//       {
+//         "id": 2,
+//         "name": "Jurgita",
+//         "surname": "Babič",
+//         "service provided": "no"
+//       },
+//       {
+//         "id": 3,
+//         "name": "Povilas",
+//         "surname": "Adamkus",
+//         "service provided": "no"
+//       },
+//       {
+//         "id": 4,
+//         "name": "Jurga",
+//         "surname": "Babič",
+//         "service provided": "no"
+//       }
+//     ],
+//     "doctor2": [
+//       {
+//         "id": 1,
+//         "name": "Andrius",
+//         "surname": "Adamkus",
+//         "service provided": "no"
+//       }
+//     ]
+//   }
+// }
