@@ -5,6 +5,7 @@ import Navigation from "./Navigation";
 import Page404 from "./pages/Page404";
 import Private from "./pages/Private";
 import Screen from "./pages/Screen";
+import Administration from "./pages/Administration";
 
 class App extends React.Component {
   render() {
@@ -13,7 +14,7 @@ class App extends React.Component {
         <BrowserRouter>
           <Navigation />
           <Switch>
-            <Route exact path="/" />
+            <Route exact path="/" component={Administration} />
             <Route exact path="/Screen" component={Screen} />
             <Route exact path="/Private" component={Private} />
             <Route component={Page404} />

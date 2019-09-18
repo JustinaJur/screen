@@ -1,0 +1,33 @@
+{
+  "data": {
+    "doctor1": [
+      {
+        "id": 1,
+        "name": "Andrius",
+        "surname": "Adamkus"
+      },
+      {
+        "id": 2,
+        "name": "Jurgita",
+        "surname": "Babič"
+      },
+      {
+        "id": 3,
+        "name": "Povilas",
+        "surname": "Adamkus"
+      },
+      {
+        "id": 4,
+        "name": "Jurga",
+        "surname": "Babič"
+      }
+    ],
+    "doctor2": [
+      {
+        "id": 1,
+        "name": "Andrius",
+        "surname": "Adamkus"
+      }
+    ]
+  }
+}

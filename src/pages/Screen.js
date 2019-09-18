@@ -1,8 +1,14 @@
 import React from "react";
 
+import ClientsList from "../components/ClientsList";
+
 class Screen extends React.Component {
   render() {
-    return <div>Screen</div>;
+    return (
+      <div>
+        <ClientsList />
+      </div>
+    );
   }
 }
 
