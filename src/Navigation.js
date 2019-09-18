@@ -12,7 +12,7 @@ const Navigation = props => {
           <NavLink to="/Screen">Screen</NavLink>
         </li>
         <li>
-          <NavLink to="/Private">Doctor's page</NavLink>
+          <NavLink to="/Doctor">Doctor's page</NavLink>
         </li>
       </ul>
     </nav>

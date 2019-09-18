@@ -17,8 +17,8 @@ class ClientsList extends React.Component {
     console.log(response);
 
     this.setState({
-      doctor1: response.filter(doctor => doctor.selected_doctor == "doctor1"),
-      doctor2: response.filter(doctor => doctor.selected_doctor == "doctor2")
+      doctor1: response.filter(doctor => doctor.selected_doctor === "doctor1"),
+      doctor2: response.filter(doctor => doctor.selected_doctor === "doctor2")
     });
   };
 
@@ -26,19 +26,24 @@ class ClientsList extends React.Component {
     return (
       <div>
         {this.state.doctor1.length !== 0 && <h2>Doctor1</h2>}
-        {this.state.doctor1.sort().map(client => {
+        {this.state.doctor1.map((client, index) => {
           return (
-            <p key={client.id}>
+            // `No. ${client.id} - ${client.name} ${client.surname} -`
+            //  <p> {index === 0? "Now" :  index * 5}</p>
+            <div key={client.id}>
               {client.id} {client.name} {client.surname}
-            </p>
+              {index === 0 ? "Now" : index * 5}
+            </div>
           );
         })}
+
         {this.state.doctor2.length !== 0 && <h2>Doctor2</h2>}
-        {this.state.doctor2.map(client => {
+        {this.state.doctor2.map((client, index) => {
           return (
-            <p key={client.id}>
+            <div key={client.id}>
               {client.id} {client.name} {client.surname}
-            </p>
+              {index === 0 ? "Now" : index * 5}
+            </div>
           );
         })}
       </div>

@@ -19,13 +19,13 @@ class Administration extends React.Component {
   getClientsData = async () => {
     const response = await getAllClients();
 
-    // this.setState({
-    //   doctor1: response.doctor1,
-    //   doctor2: response.doctor2
-    // });
+    this.setState({
+      doctor1: response.doctor1,
+      doctor2: response.doctor2
+    });
   };
 
-  onSaveClientsData = () => {
+  onSaveToLocalStorage = () => {
     const { doctor1, doctor2 } = this.state;
 
     localStorage.setItem("doctor1", JSON.stringify(doctor1));
@@ -57,8 +57,10 @@ class Administration extends React.Component {
     //   surname: this.state.surname,
     //   selectedDoctor: this.state.selectedDoctor
     // };
+
+    if (!name || !surname) return;
     const response = await createNewClient(name, surname, selectedDoctor);
-    console.log(response);
+    //console.log(response);
     // localStorage.setItem("user", JSON.stringify(person));
   };
 
@@ -83,7 +85,7 @@ class Administration extends React.Component {
           <input placeholder="surname" onChange={this.handleSurnameChange} />
         </label>
         <button onClick={this.onSubmitNewClient}>Add client</button> <br />
-        <button onClick={this.onSaveClientsData}>
+        <button onClick={this.onSaveToLocalStorage}>
           Save data to localStorage
         </button>
       </div>
