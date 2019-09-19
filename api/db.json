@@ -1,11 +1,20 @@
 {
   "clients": [
     {
-      "name": "gbgbg",
-      "surname": "bggbgbb",
-      "selected_doctor": "doctor1",
-      "service_provided": "no",
+      "name": " b ",
+      "surname": "bvgbfb",
+      "selectedDoctor": "doctor1",
+      "registrationIn": "23:23",
+      "serviceProvided": "no",
       "id": 1
+    },
+    {
+      "name": "k.k",
+      "surname": "l.k",
+      "selectedDoctor": "doctor2",
+      "registrationIn": "0:10",
+      "serviceProvided": "no",
+      "id": 2
     }
   ]
 }

@@ -1,6 +1,8 @@
-import React from "react";
+import React, { Fragment } from "react";
+import { Dropdown, Container, Divider, Card, Message } from "semantic-ui-react";
 
 import { getAllClients, createNewClient } from "../data/api";
+import { doctorsOptions } from "../data/doctorsOptions";
 
 class Administration extends React.Component {
   state = {
@@ -9,9 +11,9 @@ class Administration extends React.Component {
     selectedDoctor: "doctor1",
     fullNames: [],
     doctor1: [],
-    doctor2: []
+    doctor2: [],
+    isSuccessMessageVisible: false
   };
-
   componentDidMount() {
     this.getClientsData();
   }
@@ -23,13 +25,6 @@ class Administration extends React.Component {
       doctor1: response.doctor1,
       doctor2: response.doctor2
     });
-  };
-
-  onSaveToLocalStorage = () => {
-    const { doctor1, doctor2 } = this.state;
-
-    localStorage.setItem("doctor1", JSON.stringify(doctor1));
-    localStorage.setItem("doctor2", JSON.stringify(doctor2));
   };
 
   handleNameChange = event => {
@@ -44,59 +39,117 @@ class Administration extends React.Component {
     });
   };
 
-  handleSelectedDoctor = event => {
+  handleSelectedDoctor = (event, value) => {
     this.setState({
-      selectedDoctor: event.target.value
+      selectedDoctor: event.target.textContent
     });
   };
 
-  onSubmitNewClient = async () => {
+  handleSuccessMessage = () => {
+    setTimeout(() => {
+      this.setState({ isMessageVisible: false });
+    }, 1000);
+  };
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  onSaveInitialData = () => {
+    const { doctor1, doctor2 } = this.state;
+
+    localStorage.setItem("doctor1", JSON.stringify(doctor1));
+    localStorage.setItem("doctor2", JSON.stringify(doctor2));
+  };
+
+  onSubmitNewClient = async e => {
+    e.preventDefault();
     const { name, surname, selectedDoctor } = this.state;
     // const person = {
     //   name: this.state.name,
     //   surname: this.state.surname,
     //   selectedDoctor: this.state.selectedDoctor
     // };
+    const time = new Date();
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
+    const seconds = time.getSeconds();
+    const registrationIn = hours + ":" + minutes;
+    console.log(hours + ":" + minutes + ":" + seconds);
 
     if (!name || !surname) return;
-    const response = await createNewClient(name, surname, selectedDoctor);
-    //console.log(response);
+    const response = await createNewClient(
+      name,
+      surname,
+      selectedDoctor,
+      registrationIn
+    );
+
+    if (response) {
+      this.setState({
+        isSuccessMessageVisible: true
+      });
+      this.handleSuccessMessage();
+    }
+    console.log(response);
     // localStorage.setItem("user", JSON.stringify(person));
   };
 
   render() {
+    const { isSuccessMessageVisible } = this.state;
+
     return (
-      <div>
-        <select
-          onChange={this.handleSelectedDoctor}
-          value={this.state.selectedDoctor}
+      <Container>
+        {isSuccessMessageVisible && (
+          <Message
+            success
+            header="The client has been registered successfully"
+          />
+        )}
+        <form class="ui form">
+          <div class="field">
+            <label>Select a Doctor</label>
+            <Dropdown
+              placeholder="Select a Doctor"
+              fluid
+              selection
+              options={doctorsOptions}
+              onChange={this.handleSelectedDoctor}
+            />
+          </div>
+          <div class="field">
+            <label>First Name</label>
+            <input placeholder="First Name" onChange={this.handleNameChange} />
+          </div>
+          <div class="field">
+            <label>Last Name</label>
+            <input
+              placeholder="Last Name"
+              onChange={this.handleSurnameChange}
+            />
+          </div>
+          <button
+            class="ui button primary"
+            type="submit"
+            onClick={this.onSubmitNewClient}
+          >
+            Add client
+          </button>
+        </form>
+        <Divider horizontal />
+        <button
+          class="ui button secondary"
+          type="submit"
+          onClick={this.onSaveInitialData}
         >
-          <option value="doctor1" defaultValue>
-            Doctor1
-          </option>
-          <option value="doctor2">Doctor2</option>
-        </select>
-        <label>
-          Name:
-          <input
-            placeholder="name"
-            onChange={this.handleNameChange}
-            name="name"
-          />
-        </label>
-        <label>
-          Surname:
-          <input
-            placeholder="surname"
-            name="surname"
-            onChange={this.handleSurnameChange}
-          />
-        </label>
-        <button onClick={this.onSubmitNewClient}>Add client</button> <br />
-        <button onClick={this.onSaveToLocalStorage}>
-          Save data to localStorage
+          Save initial data to localStorage
         </button>
-      </div>
+        <Divider horizontal />
+        <button
+          class="ui button secondary"
+          type="submit"
+          onClick={this.onSaveAllData}
+        >
+          Save all data to localStorage
+        </button>
+      </Container>
     );
   }
 }

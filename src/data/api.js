@@ -11,13 +11,19 @@ export const getAllClients = async () => {
   }
 };
 
-export const createNewClient = async (name, surname, selectedDoctor) => {
+export const createNewClient = async (
+  name,
+  surname,
+  selectedDoctor,
+  registrationIn
+) => {
   try {
     const response = await axios.post(CLIENTS_API, {
       name,
       surname,
-      selected_doctor: selectedDoctor,
-      service_provided: "no"
+      selectedDoctor,
+      registrationIn,
+      serviceProvided: "no"
     });
 
     return response.data;
@@ -29,6 +35,26 @@ export const createNewClient = async (name, surname, selectedDoctor) => {
 export const deleteClient = async id => {
   try {
     const response = await axios.delete(`${CLIENTS_API}/${id}`);
+
+    return response.data;
+  } catch (ex) {
+    return null;
+  }
+};
+
+export const updateClient = async (
+  id,
+  { name, surname, selectedDoctor, registrationIn, registrationOut }
+) => {
+  try {
+    const response = await axios.put(`${CLIENTS_API}/${id}`, {
+      name,
+      surname,
+      selectedDoctor,
+      registrationIn,
+      registrationOut,
+      serviceProvided: "yes"
+    });
 
     return response.data;
   } catch (ex) {

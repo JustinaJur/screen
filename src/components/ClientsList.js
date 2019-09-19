@@ -1,4 +1,5 @@
-import React from "react";
+import React, { Fragment } from "react";
+import { Dropdown, Container, Divider, Card } from "semantic-ui-react";
 
 import { getAllClients } from "../data/api";
 
@@ -22,31 +23,55 @@ class ClientsList extends React.Component {
     });
   };
 
+  countWaitingTimeLeft = time => {};
+
   render() {
     return (
-      <div>
-        {this.state.doctor1.length !== 0 && <h2>Doctor1</h2>}
-        {this.state.doctor1.map((client, index) => {
-          return (
-            // `No. ${client.id} - ${client.name} ${client.surname} -`
-            //  <p> {index === 0? "Now" :  index * 5}</p>
-            <div key={client.id}>
-              {client.id} {client.name} {client.surname}
-              {index === 0 ? "Now" : index * 5}
-            </div>
-          );
-        })}
+      <Container>
+        {this.state.doctor2 && (
+          <Card>
+            <h2>Doctor1</h2>
+            {this.state.doctor1
+              .filter(client => client.service_provided == "no")
+              .map((client, index) => {
+                return (
+                  <Fragment>
+                    {index === 0 ? (
+                      <div key={client.id} className="highlighted">
+                        No. {client.id} -{client.name} {client.surname} NOW
+                      </div>
+                    ) : (
+                      <div key={client.id}>
+                        No. {client.id} -{client.name} {client.surname}
+                        <p> In {index * 5} min.</p>
+                      </div>
+                    )}
+                  </Fragment>
+                );
+              })}
+          </Card>
+        )}
 
-        {this.state.doctor2.length !== 0 && <h2>Doctor2</h2>}
-        {this.state.doctor2.map((client, index) => {
-          return (
-            <div key={client.id}>
-              {client.id} {client.name} {client.surname}
-              {index === 0 ? "Now" : index * 5}
-            </div>
-          );
-        })}
-      </div>
+        <Card>
+          {this.state.doctor2.length !== 0 && <h2>Doctor2</h2>}
+          {this.state.doctor2.map((client, index) => {
+            return (
+              <Fragment>
+                {index === 0 ? (
+                  <div key={client.id} className="highlighted">
+                    No. {client.id} -{client.name} {client.surname} NOW
+                  </div>
+                ) : (
+                  <div key={client.id}>
+                    No. {client.id} -{client.name} {client.surname}
+                    <p> In {index * 5} min.</p>
+                  </div>
+                )}
+              </Fragment>
+            );
+          })}
+        </Card>
+      </Container>
     );
   }
 }
