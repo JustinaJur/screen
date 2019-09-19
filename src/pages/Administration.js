@@ -78,11 +78,19 @@ class Administration extends React.Component {
         </select>
         <label>
           Name:
-          <input placeholder="name" onChange={this.handleNameChange} />
+          <input
+            placeholder="name"
+            onChange={this.handleNameChange}
+            name="name"
+          />
         </label>
         <label>
           Surname:
-          <input placeholder="surname" onChange={this.handleSurnameChange} />
+          <input
+            placeholder="surname"
+            name="surname"
+            onChange={this.handleSurnameChange}
+          />
         </label>
         <button onClick={this.onSubmitNewClient}>Add client</button> <br />
         <button onClick={this.onSaveToLocalStorage}>
