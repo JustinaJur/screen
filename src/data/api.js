@@ -42,20 +42,20 @@ export const deleteClient = async id => {
   }
 };
 
-export const updateClient = async (
-  id,
-  { name, surname, selectedDoctor, registrationIn, registrationOut }
-) => {
+export const updateClient = async (id, clientData) => {
   try {
-    const response = await axios.put(`${CLIENTS_API}/${id}`, {
-      name,
-      surname,
-      selectedDoctor,
-      registrationIn,
-      registrationOut,
-      serviceProvided: "yes"
-    });
+    const response = await axios.put(
+      `${CLIENTS_API}/${id}`,
 
+      {
+        name: clientData.name,
+        surname: clientData.surname,
+        selectedDoctor: clientData.selectedDoctor,
+        registrationIn: clientData.registrationIn,
+        registrationOut: clientData.registrationOut,
+        serviceProvided: "yes"
+      }
+    );
     return response.data;
   } catch (ex) {
     return null;

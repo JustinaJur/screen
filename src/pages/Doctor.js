@@ -15,13 +15,11 @@ class Doctor extends React.Component {
 
   getClientsData = async () => {
     const response = await getAllClients();
-    console.log("All clients:", response);
 
     this.setState({
       doctor1: response.filter(doctor => doctor.selectedDoctor === "doctor1"),
       doctor2: response.filter(doctor => doctor.selectedDoctor === "doctor2")
     });
-    console.log("state", this.state);
   };
 
   onDeleteClient = async e => {
@@ -29,27 +27,36 @@ class Doctor extends React.Component {
     this.getClientsData();
   };
 
-  onUpdateClient = async (e, doctor) => {
+  onUpdateClient = async (
+    event,
+    name,
+    surname,
+    selectedDoctor,
+    registrationIn
+  ) => {
     const time = new Date();
     const hours = time.getHours();
     const minutes = time.getMinutes();
     const seconds = time.getSeconds();
-    const registrationOut = hours + ":" + minutes;
+    const registrationOut = hours + "." + minutes;
     // console.log(hours + ":" + minutes + ":" + seconds);
-    console.log(doctor);
-    const response = await updateClient(e.target.id, {
-      name: doctor.name,
-      surname: doctor.surname,
-      registrationIn: doctor.registrationIn,
-      selectedDoctor: doctor.selectedDoctor,
+    // console.log(doctor);
+
+    const clientData = {
+      name: name,
+      surname: surname,
+      selectedDoctor,
+      registrationIn,
       registrationOut
-    });
-    console.log(response);
+    };
+
+    const response = await updateClient(event.target.id, clientData);
 
     this.getClientsData();
   };
 
-  renderClientsTable = doctor => {
+  renderDoctorClients = doctor => {
+    console.log(doctor);
     return (
       <Table>
         {doctor
@@ -61,6 +68,7 @@ class Doctor extends React.Component {
                   <Table.HeaderCell>{client.name}</Table.HeaderCell>
                   <Table.HeaderCell>{client.surname}</Table.HeaderCell>
                   <Table.HeaderCell>{client.registrationIn}</Table.HeaderCell>
+                  <Table.HeaderCell>{client.registrationOut}</Table.HeaderCell>
                   <Table.HeaderCell>
                     <button
                       className="ui green basic button"
@@ -68,11 +76,10 @@ class Doctor extends React.Component {
                       onClick={event =>
                         this.onUpdateClient(
                           event,
-                          // client.name,
-                          // client.surname,
-
-                          // client.registrationIn
-                          doctor
+                          client.name,
+                          client.surname,
+                          client.selectedDoctor,
+                          client.registrationIn
                         )
                       }
                     >
@@ -102,9 +109,9 @@ class Doctor extends React.Component {
     return (
       <Fragment>
         <h2>Doctor1</h2>
-        {doctor1 && this.renderClientsTable(doctor1)}
+        {doctor1.length > 0 ? this.renderDoctorClients(doctor1) : "No data"}
         <h2>Doctor2</h2>
-        {doctor2 && this.renderClientsTable(doctor2)}
+        {doctor2.length > 0 ? this.renderDoctorClients(doctor2) : "No data"}
       </Fragment>
     );
   }
