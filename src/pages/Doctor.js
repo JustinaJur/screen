@@ -34,13 +34,23 @@ class Doctor extends React.Component {
     selectedDoctor,
     registrationIn
   ) => {
-    const time = new Date();
-    const hours = time.getHours();
-    const minutes = time.getMinutes();
-    const seconds = time.getSeconds();
-    const registrationOut = hours + "." + minutes;
+    //  const registrationOut = new Date();
+    // const hours = time.getHours();
+    // const minutes = time.getMinutes();
+    // const seconds = time.getSeconds();
+    // const registrationOut = hours + "." + minutes;
     // console.log(hours + ":" + minutes + ":" + seconds);
     // console.log(doctor);
+    const date = Date.now();
+
+    var registrationOut = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit"
+    }).format(date);
 
     const clientData = {
       name: name,
@@ -56,7 +66,21 @@ class Doctor extends React.Component {
   };
 
   renderDoctorClients = doctor => {
-    console.log(doctor);
+    // console.log(doctor);
+    // let d = new Date();
+    // var juste = doctor[0].registrationIn;
+    // console.log(juste.toLocaleTimeString());
+    // console.log(d);
+    // console.log(d.toLocaleTimeString());
+    // console.log(function prettyDate2(time) {
+    //   var date = new Date(parseInt(d));
+    //   return date.toLocaleTimeString(navigator.language, {
+    //     hour: "2-digit",
+    //     minute: "2-digit"
+    //   });
+    // });
+
+    // console.log(doctor[0].registrationIn.toLocaleTimeString());
     return (
       <Table>
         {doctor

@@ -1,62 +1,39 @@
 {
   "clients": [
     {
-      "name": "thyhy",
-      "surname": "hytyhy",
+      "name": "nghn",
+      "surname": "ngn",
       "selectedDoctor": "doctor1",
-      "registrationIn": "10.3",
-      "registrationOut": "10.4",
+      "registrationIn": "09/20/2019, 11:52:41 AM",
+      "registrationOut": "09/20/2019, 11:53:33 AM",
       "serviceProvided": "yes",
       "id": 1
     },
     {
-      "name": "vdvdcdcdc",
-      "surname": "dscscdcd",
-      "selectedDoctor": "doctor2",
-      "registrationIn": "10.4",
-      "registrationOut": "10.4",
+      "name": "bgf",
+      "surname": "gfgdf",
+      "selectedDoctor": "doctor1",
+      "registrationIn": "09/20/2019, 11:53:25 AM",
+      "registrationOut": "09/20/2019, 11:53:48 AM",
+      "serviceProvided": "yes",
+      "id": 2
+    },
+    {
+      "name": "bgf",
+      "surname": "gfgdf",
+      "selectedDoctor": "doctor1",
+      "registrationIn": "09/20/2019, 11:53:25 AM",
+      "registrationOut": "09/20/2019, 11:53:51 AM",
       "serviceProvided": "yes",
       "id": 3
     },
     {
-      "name": "justins",
-      "surname": "jurge;eviciute",
+      "name": "bgf",
+      "surname": "gfgdf",
       "selectedDoctor": "doctor1",
-      "registrationIn": "10.24",
+      "registrationIn": "09/20/2019, 11:53:26 AM",
       "serviceProvided": "no",
       "id": 4
-    },
-    {
-      "name": "justins",
-      "surname": "jurge;eviciute",
-      "selectedDoctor": "doctor1",
-      "registrationIn": "10.24",
-      "serviceProvided": "no",
-      "id": 5
-    },
-    {
-      "name": "justins",
-      "surname": "jurge;eviciute",
-      "selectedDoctor": "doctor1",
-      "registrationIn": "10.24",
-      "serviceProvided": "no",
-      "id": 6
-    },
-    {
-      "name": "justins",
-      "surname": "jurge;eviciute",
-      "selectedDoctor": "doctor1",
-      "registrationIn": "10.24",
-      "serviceProvided": "no",
-      "id": 7
-    },
-    {
-      "name": "justins",
-      "surname": "jurge;eviciute",
-      "selectedDoctor": "doctor1",
-      "registrationIn": "10.24",
-      "serviceProvided": "no",
-      "id": 8
     }
   ]
 }

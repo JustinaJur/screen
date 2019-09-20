@@ -1,11 +1,11 @@
 import React, { Fragment } from "react";
-import Moment from "react-moment";
+import moment from "react-moment";
 import "moment-timezone";
+
 import { Dropdown, Container, Divider, Card, Message } from "semantic-ui-react";
 
 import { getAllClients, createNewClient } from "../data/api";
 import { doctorsOptions } from "../data/doctorsOptions";
-import moment from "moment";
 
 class Administration extends React.Component {
   state = {
@@ -23,9 +23,6 @@ class Administration extends React.Component {
 
   getClientsData = async () => {
     const response = await getAllClients();
-
-    const currentDate = moment();
-    console.log(currentDate._d);
 
     this.setState({
       doctor1: response.doctor1,
@@ -68,17 +65,28 @@ class Administration extends React.Component {
   onSubmitNewClient = async e => {
     e.preventDefault();
     const { name, surname, selectedDoctor } = this.state;
-    // const person = {
-    //   name: this.state.name,
-    //   surname: this.state.surname,
-    //   selectedDoctor: this.state.selectedDoctor
-    // };
-    const time = new Date();
-    const hours = time.getHours();
-    const minutes = time.getMinutes();
-    const seconds = time.getSeconds();
-    const registrationIn = hours + "." + minutes;
-    console.log(hours + "." + minutes + ":" + seconds);
+
+    // const registrationIn = new Date().toLocaleTimeString(navigator.language, {
+    //   hour: "2-digit",
+    //   minute: "2-digit"
+    // });
+
+    const date = Date.now();
+
+    var registrationIn = new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit"
+    }).format(date);
+    // console.log(registrationIn);
+    // const hours = time.getHours();
+    // const minutes = time.getMinutes();
+    // const seconds = time.getSeconds();
+    // const registrationIn = hours + "." + minutes;
+    // console.log(hours + "." + minutes + ":" + seconds);
 
     if (!name || !surname) return;
     const response = await createNewClient(
@@ -100,6 +108,8 @@ class Administration extends React.Component {
 
   render() {
     const { isSuccessMessageVisible } = this.state;
+    // const currentDate = moment();
+    // console.log(currentDate);
 
     return (
       <Container>
@@ -109,6 +119,7 @@ class Administration extends React.Component {
             header="The client has been registered successfully"
           />
         )}
+
         <form class="ui form">
           <div class="field">
             <label>Select a Doctor</label>
