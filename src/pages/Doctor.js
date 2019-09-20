@@ -34,30 +34,25 @@ class Doctor extends React.Component {
     selectedDoctor,
     registrationIn
   ) => {
-    //  const registrationOut = new Date();
-    // const hours = time.getHours();
-    // const minutes = time.getMinutes();
-    // const seconds = time.getSeconds();
-    // const registrationOut = hours + "." + minutes;
-    // console.log(hours + ":" + minutes + ":" + seconds);
-    // console.log(doctor);
-    const date = Date.now();
-
-    var registrationOut = new Intl.DateTimeFormat("en-US", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
+    const registrationDate = new Date().toISOString().slice(0, 10);
+    const registrationTime = new Date().toLocaleTimeString(navigator.language, {
       hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit"
-    }).format(date);
+      minute: "2-digit"
+    });
+    const registrationOut = `${registrationDate} ${registrationTime}`;
+
+    const startTime = new Date(registrationIn);
+    const endTime = new Date(registrationOut);
+    const difference = endTime.getTime() - startTime.getTime();
+    const appointmentDuration = Math.round(difference / 60000);
 
     const clientData = {
       name: name,
       surname: surname,
       selectedDoctor,
       registrationIn,
-      registrationOut
+      registrationOut,
+      appointmentDuration
     };
 
     const response = await updateClient(event.target.id, clientData);
@@ -66,63 +61,53 @@ class Doctor extends React.Component {
   };
 
   renderDoctorClients = doctor => {
-    // console.log(doctor);
-    // let d = new Date();
-    // var juste = doctor[0].registrationIn;
-    // console.log(juste.toLocaleTimeString());
-    // console.log(d);
-    // console.log(d.toLocaleTimeString());
-    // console.log(function prettyDate2(time) {
-    //   var date = new Date(parseInt(d));
-    //   return date.toLocaleTimeString(navigator.language, {
-    //     hour: "2-digit",
-    //     minute: "2-digit"
-    //   });
-    // });
+    const { appointmentDuration } = this.state;
 
-    // console.log(doctor[0].registrationIn.toLocaleTimeString());
     return (
       <Table>
-        {doctor
-          // .filter(client => client.service_provided == "no")
-          .map((client, index) => {
-            return (
-              <Table.Header>
-                <Table.Row>
-                  <Table.HeaderCell>{client.name}</Table.HeaderCell>
-                  <Table.HeaderCell>{client.surname}</Table.HeaderCell>
-                  <Table.HeaderCell>{client.registrationIn}</Table.HeaderCell>
-                  <Table.HeaderCell>{client.registrationOut}</Table.HeaderCell>
-                  <Table.HeaderCell>
-                    <button
-                      className="ui green basic button"
-                      id={client.id}
-                      onClick={event =>
-                        this.onUpdateClient(
-                          event,
-                          client.name,
-                          client.surname,
-                          client.selectedDoctor,
-                          client.registrationIn
-                        )
-                      }
-                    >
-                      Done
-                    </button>
-                  </Table.HeaderCell>
-                  <Table.HeaderCell>
-                    <button
-                      className="ui grey basic button"
-                      id={client.id}
-                      onClick={event => this.onDeleteClient(event)}
-                    >
-                      Delete
-                    </button>
-                  </Table.HeaderCell>
-                </Table.Row>
-              </Table.Header>
-            );
-          })}
+        {doctor.map((client, index) => {
+          return (
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>{client.name}</Table.HeaderCell>
+                <Table.HeaderCell>{client.surname}</Table.HeaderCell>
+                <Table.HeaderCell>{client.registrationIn}</Table.HeaderCell>
+                <Table.HeaderCell>{client.registrationOut}</Table.HeaderCell>
+                <Table.HeaderCell>
+                  <button
+                    className="ui green basic button"
+                    id={client.id}
+                    onClick={event =>
+                      this.onUpdateClient(
+                        event,
+                        client.name,
+                        client.surname,
+                        client.selectedDoctor,
+                        client.registrationIn
+                      )
+                    }
+                  >
+                    Done
+                  </button>
+                </Table.HeaderCell>
+                <Table.HeaderCell>
+                  <button className="ui yellow basic button">
+                    Appointment duration in min: {client.appointmentDuration}
+                  </button>
+                </Table.HeaderCell>
+                <Table.HeaderCell>
+                  <button
+                    className="ui grey basic button"
+                    id={client.id}
+                    onClick={event => this.onDeleteClient(event)}
+                  >
+                    Delete
+                  </button>
+                </Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+          );
+        })}
       </Table>
     );
   };

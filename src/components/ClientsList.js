@@ -30,18 +30,14 @@ class ClientsList extends React.Component {
       doctor1: response.filter(doctor => doctor.selectedDoctor === "doctor1"),
       doctor2: response.filter(doctor => doctor.selectedDoctor === "doctor2")
     });
+
+    this.countEverageAppointmentDuration(response);
   };
 
-  countWaitingTimeLeft = time => {};
+  countEverageAppointmentDuration = () => {};
 
   render() {
     const { isNoDataMessageVisible } = this.state;
-
-    const date = "2019-09-20T08:32:30.111Z";
-
-    // var a = moment("2016-01-01");
-    // var b = a.add(1, "week");
-    // console.log(b);
 
     return (
       <Fragment>
@@ -49,10 +45,6 @@ class ClientsList extends React.Component {
           <Message warning header="Clients' data was not found" />
         ) : (
           <Container>
-            {/* <Moment add={{ minutes: 55 }}>{date}</Moment> */}
-
-            <Moment parse="YYYY-MM-DD HH:mm">2019-09-20T08:32:30.111Z</Moment>
-
             {this.state.doctor2 && (
               <Card>
                 <h2>Doctor1</h2>

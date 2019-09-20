@@ -1,39 +1,62 @@
 {
   "clients": [
     {
-      "name": "nghn",
-      "surname": "ngn",
+      "name": "ssq",
+      "surname": "saS",
       "selectedDoctor": "doctor1",
-      "registrationIn": "09/20/2019, 11:52:41 AM",
-      "registrationOut": "09/20/2019, 11:53:33 AM",
+      "registrationIn": "2019-09-20 12:45",
+      "registrationOut": "2019-09-20 13:01",
+      "appointmentDuration": 16,
       "serviceProvided": "yes",
       "id": 1
     },
     {
-      "name": "bgf",
-      "surname": "gfgdf",
+      "name": "dwdw",
+      "surname": "dwdwd",
       "selectedDoctor": "doctor1",
-      "registrationIn": "09/20/2019, 11:53:25 AM",
-      "registrationOut": "09/20/2019, 11:53:48 AM",
-      "serviceProvided": "yes",
+      "registrationIn": "2019-09-20 13:05",
+      "serviceProvided": "no",
       "id": 2
     },
     {
-      "name": "bgf",
-      "surname": "gfgdf",
+      "name": "dwdw",
+      "surname": "dwdwd",
       "selectedDoctor": "doctor1",
-      "registrationIn": "09/20/2019, 11:53:25 AM",
-      "registrationOut": "09/20/2019, 11:53:51 AM",
-      "serviceProvided": "yes",
+      "registrationIn": "2019-09-20 13:05",
+      "serviceProvided": "no",
       "id": 3
     },
     {
-      "name": "bgf",
-      "surname": "gfgdf",
+      "name": "dwdw",
+      "surname": "dwdwd",
       "selectedDoctor": "doctor1",
-      "registrationIn": "09/20/2019, 11:53:26 AM",
+      "registrationIn": "2019-09-20 13:05",
       "serviceProvided": "no",
       "id": 4
+    },
+    {
+      "name": "dwdw",
+      "surname": "dwdwd",
+      "selectedDoctor": "doctor1",
+      "registrationIn": "2019-09-20 13:05",
+      "serviceProvided": "no",
+      "id": 5
+    },
+    {
+      "name": "dwdw",
+      "surname": "dwdwd",
+      "selectedDoctor": "doctor1",
+      "registrationIn": "2019-09-20 13:05",
+      "serviceProvided": "no",
+      "id": 6
+    },
+    {
+      "name": "dwdw",
+      "surname": "dwdwd",
+      "selectedDoctor": "doctor1",
+      "registrationIn": "2019-09-20 13:05",
+      "serviceProvided": "no",
+      "id": 7
     }
   ]
 }

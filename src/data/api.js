@@ -53,6 +53,7 @@ export const updateClient = async (id, clientData) => {
         selectedDoctor: clientData.selectedDoctor,
         registrationIn: clientData.registrationIn,
         registrationOut: clientData.registrationOut,
+        appointmentDuration: clientData.appointmentDuration,
         serviceProvided: "yes"
       }
     );

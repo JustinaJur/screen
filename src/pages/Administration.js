@@ -71,16 +71,26 @@ class Administration extends React.Component {
     //   minute: "2-digit"
     // });
 
-    const date = Date.now();
-
-    var registrationIn = new Intl.DateTimeFormat("en-US", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
+    const registrationDate = new Date().toISOString().slice(0, 10);
+    const registrationTime = new Date().toLocaleTimeString(navigator.language, {
       hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit"
-    }).format(date);
+      minute: "2-digit"
+    });
+    const registrationIn = `${registrationDate} ${registrationTime}`;
+
+    // const date = Date.now();
+
+    // const options = {
+    //   year: "numeric",
+    //   month: "numeric",
+    //   day: "numeric",
+    //   hour: "numeric",
+    //   minute: "numeric",
+    //   second: "numeric",
+    //   hour12: false
+    // };
+    // var registrationIn = new Intl.DateTimeFormat("en-GB", options).format(date);
+
     // console.log(registrationIn);
     // const hours = time.getHours();
     // const minutes = time.getMinutes();
