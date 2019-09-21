@@ -1,5 +1,12 @@
 import React, { Fragment } from "react";
-import { Dropdown, Container, Divider, Card, Table } from "semantic-ui-react";
+import {
+  Dropdown,
+  Container,
+  Divider,
+  Card,
+  Table,
+  Accordion
+} from "semantic-ui-react";
 
 import { getAllClients, deleteClient, updateClient } from "../data/api";
 
@@ -12,6 +19,10 @@ class Doctor extends React.Component {
   componentDidMount() {
     this.getClientsData();
   }
+  onDeleteClient = async e => {
+    const response = await deleteClient(e.target.id);
+    this.getClientsData();
+  };
 
   getClientsData = async () => {
     const response = await getAllClients();
@@ -20,12 +31,53 @@ class Doctor extends React.Component {
       doctor1: response.filter(doctor => doctor.selectedDoctor === "doctor1"),
       doctor2: response.filter(doctor => doctor.selectedDoctor === "doctor2")
     });
+
+    this.countAverageAppointmentDuration(response);
   };
 
-  onDeleteClient = async e => {
-    const response = await deleteClient(e.target.id);
-    this.getClientsData();
+  /////////////////////////////////////////////////////////////////////////////////
+  saveAverageDurationtoLocalStorage = (doctor, duration) => {
+    // console.log(doctor, duration);
+    localStorage.setItem(doctor, JSON.stringify(duration));
+    // console.log(localStorage.getItem("doctor1")) ;
   };
+
+  countAverageAppointmentDuration = response => {
+    console.log(response);
+
+    const filteredDoctor1 = response.filter(
+      client =>
+        client.selectedDoctor === "doctor1" && client.serviceProvided === "yes"
+    );
+    console.log(filteredDoctor1);
+    const averageDurationDoctor1 =
+      filteredDoctor1
+        .map(client => client.appointmentDuration)
+        .reduce((total, current) => total + current, 0) /
+      filteredDoctor1.length;
+    this.setState({
+      averageDurationDoctor1
+    });
+    console.log(averageDurationDoctor1);
+    this.saveAverageDurationtoLocalStorage("doctor1", averageDurationDoctor1);
+
+    const filteredDoctor2 = response.filter(
+      client =>
+        client.selectedDoctor === "doctor2" && client.serviceProvided === "yes"
+    );
+
+    const averageDurationDoctor2 =
+      filteredDoctor2
+        .map(client => client.appointmentDuration)
+        .reduce((total, current) => total + current, 0) /
+      filteredDoctor1.length;
+    this.setState({
+      averageDurationDoctor2
+    });
+    this.saveAverageDurationtoLocalStorage("doctor2", averageDurationDoctor2);
+    console.log(averageDurationDoctor2);
+  };
+  ////////////////////////////////////////////////////////
 
   onUpdateClient = async (
     event,
@@ -69,6 +121,7 @@ class Doctor extends React.Component {
           return (
             <Table.Header>
               <Table.Row>
+                <Table.HeaderCell>{client.id}</Table.HeaderCell>
                 <Table.HeaderCell>{client.name}</Table.HeaderCell>
                 <Table.HeaderCell>{client.surname}</Table.HeaderCell>
                 <Table.HeaderCell>{client.registrationIn}</Table.HeaderCell>
@@ -115,13 +168,35 @@ class Doctor extends React.Component {
   render() {
     const { doctor1, doctor2 } = this.state;
 
+    const rootPanels = [
+      {
+        key: "panel-1",
+        title: "Doctor1",
+        content: {
+          content: (
+            <Fragment>
+              {doctor1.length > 0
+                ? this.renderDoctorClients(doctor1)
+                : "No data"}
+            </Fragment>
+          )
+        }
+      },
+      {
+        key: "panel-2",
+        title: "Doctor2",
+        content: (
+          <Fragment>
+            {doctor2.length > 0 ? this.renderDoctorClients(doctor2) : "No data"}
+          </Fragment>
+        )
+      }
+    ];
+
     return (
-      <Fragment>
-        <h2>Doctor1</h2>
-        {doctor1.length > 0 ? this.renderDoctorClients(doctor1) : "No data"}
-        <h2>Doctor2</h2>
-        {doctor2.length > 0 ? this.renderDoctorClients(doctor2) : "No data"}
-      </Fragment>
+      <Container>
+        <Accordion defaultActiveIndex={0} panels={rootPanels} />
+      </Container>
     );
   }
 }

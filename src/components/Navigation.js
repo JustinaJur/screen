@@ -2,27 +2,17 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { Menu } from "semantic-ui-react";
 
-const Navigation = props => {
-  return (
-    <Menu>
-      <nav>
-        <ul>
-          <li>
-            <NavLink to="/">Administration</NavLink>
-          </li>
-          <li>
-            <NavLink to="/Screen">Screen</NavLink>
-          </li>
-          <li>
-            <NavLink to="/Doctor">Doctor's page</NavLink>
-          </li>
-          <li>
-            <NavLink to="/Client">Client's page</NavLink>
-          </li>
-        </ul>
-      </nav>
-    </Menu>
-  );
-};
+class Navigation extends React.Component {
+  render() {
+    return (
+      <Menu>
+        <Menu.Item>{<NavLink to="/">Administration</NavLink>}</Menu.Item>
+        <Menu.Item>{<NavLink to="/Screen">Screen</NavLink>}</Menu.Item>
+        <Menu.Item>{<NavLink to="/Doctor">Doctor's page</NavLink>}</Menu.Item>
+        <Menu.Item>{<NavLink to="/Client">Client's page</NavLink>}</Menu.Item>
+      </Menu>
+    );
+  }
+}
 
 export default Navigation;

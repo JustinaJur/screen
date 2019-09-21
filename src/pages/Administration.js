@@ -66,37 +66,12 @@ class Administration extends React.Component {
     e.preventDefault();
     const { name, surname, selectedDoctor } = this.state;
 
-    // const registrationIn = new Date().toLocaleTimeString(navigator.language, {
-    //   hour: "2-digit",
-    //   minute: "2-digit"
-    // });
-
     const registrationDate = new Date().toISOString().slice(0, 10);
     const registrationTime = new Date().toLocaleTimeString(navigator.language, {
       hour: "2-digit",
       minute: "2-digit"
     });
     const registrationIn = `${registrationDate} ${registrationTime}`;
-
-    // const date = Date.now();
-
-    // const options = {
-    //   year: "numeric",
-    //   month: "numeric",
-    //   day: "numeric",
-    //   hour: "numeric",
-    //   minute: "numeric",
-    //   second: "numeric",
-    //   hour12: false
-    // };
-    // var registrationIn = new Intl.DateTimeFormat("en-GB", options).format(date);
-
-    // console.log(registrationIn);
-    // const hours = time.getHours();
-    // const minutes = time.getMinutes();
-    // const seconds = time.getSeconds();
-    // const registrationIn = hours + "." + minutes;
-    // console.log(hours + "." + minutes + ":" + seconds);
 
     if (!name || !surname) return;
     const response = await createNewClient(
