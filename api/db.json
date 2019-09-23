@@ -1,78 +1,64 @@
 {
   "clients": [
     {
-      "name": "mjm",
-      "surname": "hjj",
+      "name": "labas",
+      "surname": "vakaras",
       "selectedDoctor": "doctor1",
-      "registrationIn": "2019-09-23 18:55",
-      "registrationOut": "2019-09-23 19:55",
-      "appointmentDuration": 60,
+      "registrationIn": "2019-09-23 20:55",
+      "registrationOut": "2019-09-23 22:11",
+      "appointmentDuration": 76,
       "serviceProvided": "yes",
+      "id": 1
+    },
+    {
+      "name": "tikras",
+      "surname": "vardas",
+      "selectedDoctor": "doctor2",
+      "registrationIn": "2019-09-23 20:55",
+      "registrationOut": "2019-09-23 20:56",
+      "appointmentDuration": 1,
+      "serviceProvided": "yes",
+      "id": 2
+    },
+    {
+      "name": "janina",
+      "surname": "kazlauskaite",
+      "selectedDoctor": "doctor1",
+      "registrationIn": "2019-09-23 20:55",
+      "serviceProvided": "no",
+      "id": 3
+    },
+    {
+      "name": "Jonas",
+      "surname": "kazlauskas",
+      "selectedDoctor": "doctor1",
+      "registrationIn": "2019-09-23 20:55",
+      "serviceProvided": "no",
       "id": 4
     },
     {
-      "name": "juuu",
-      "surname": "hjj",
+      "name": "petras",
+      "surname": "sabaliauskas",
       "selectedDoctor": "doctor2",
-      "registrationIn": "2019-09-23 18:55",
-      "registrationOut": "2019-09-23 19:55",
-      "appointmentDuration": 60,
-      "serviceProvided": "yes",
+      "registrationIn": "2019-09-23 20:56",
+      "serviceProvided": "no",
       "id": 5
     },
     {
-      "name": "yjyj",
-      "surname": "hyh",
-      "selectedDoctor": "doctor1",
-      "registrationIn": "2019-09-23 18:56",
-      "registrationOut": "2019-09-23 19:57",
-      "appointmentDuration": 61,
-      "serviceProvided": "yes",
+      "name": "Tadas",
+      "surname": "Baranauskas",
+      "selectedDoctor": "doctor2",
+      "registrationIn": "2019-09-23 22:11",
+      "serviceProvided": "no",
       "id": 6
     },
     {
-      "name": "yjyj",
-      "surname": "hyh",
+      "name": "hedvika",
+      "surname": "jan",
       "selectedDoctor": "doctor1",
-      "registrationIn": "2019-09-23 18:56",
-      "registrationOut": "2019-09-23 19:58",
-      "appointmentDuration": 62,
-      "serviceProvided": "yes",
+      "registrationIn": "2019-09-23 23:39",
+      "serviceProvided": "no",
       "id": 7
-    },
-    {
-      "name": ",kj,",
-      "surname": ",k,",
-      "selectedDoctor": "doctor1",
-      "registrationIn": "2019-09-23 19:16",
-      "serviceProvided": "no",
-      "id": 8
-    },
-    {
-      "name": "vff",
-      "surname": "vfvf",
-      "selectedDoctor": "doctor2",
-      "registrationIn": "2019-09-23 19:30",
-      "registrationOut": "2019-09-23 20:13",
-      "appointmentDuration": 43,
-      "serviceProvided": "yes",
-      "id": 9
-    },
-    {
-      "name": "vff",
-      "surname": "vfvf",
-      "selectedDoctor": "doctor2",
-      "registrationIn": "2019-09-23 19:30",
-      "serviceProvided": "no",
-      "id": 10
-    },
-    {
-      "name": "nhn",
-      "surname": "nh",
-      "selectedDoctor": "doctor1",
-      "registrationIn": "2019-09-23 20:12",
-      "serviceProvided": "no",
-      "id": 11
     }
   ]
 }
