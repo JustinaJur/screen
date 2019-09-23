@@ -1,6 +1,5 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Button, Form, Container, Message } from "semantic-ui-react";
-import { groupBy, filter } from "lodash";
 
 import { getAllClients } from "../data/api";
 import {
@@ -12,65 +11,35 @@ import {
 class Client extends React.Component {
   state = {
     clientNumber: null,
-    timeLeft: null,
-    // averageDuration: 5,
-    clientIndex: "",
-    clientsOfDoctor1: [],
-    clientsOfDoctor2: [],
+    clientIndex: null,
     selectedDoctor: "",
-    noDataMessage: false
-    //averageDuration: 0
+    noDataMessage: false,
+    averageDuration: ""
   };
 
-  // componentDidMount() {
-  //   // const i = this.state.clientIndex === 0 ? 1 : this.state.clientIndex;
+  componentDidMount() {
+    this.waitingTimeIterval = setInterval(() => {
+      this.setState({
+        averageDuration: localStorage.getItem(this.state.selectedDoctor)
+      });
+    }, 5000);
+  }
 
-  //   console.log(this.state.averageDuration);
-  //   console.log(this.state.clientIndex);
-  //   this.interval = setInterval(
-  //     () =>
-  //       this.setState({
-  //         timeLeft: this.state.averageDuration * this.state.clientIndex
-  //       }),
-  //     5000
-  //   );
-  // }
-
-  // componentWillUnmount() {
-  //   clearInterval(this.interval);
-  // }
-
-  // getClientIndex = (value, array, propertyName) => {
-  //   for (let index = 0; index < array.length; index++) {
-  //     if (array[index][propertyName] === value) {
-  //       console.log("index", index);
-  //       return index;
-  //     }
-  //   }
-  //   console.log("nera tokio");
-  //   return -1;
-  // };
+  componentWillUnmount() {
+    clearInterval(this.waitingTimeIterval);
+  }
 
   findClientOnScreen = data => {
     const { clientNumber } = this.state;
 
     const foundClient = data.filter(client => {
-      return (
-        client.id === Number(clientNumber) && client.serviceProvided === "no"
-      );
+      return client.id === Number(clientNumber);
     });
-    console.log(foundClient);
+
     return foundClient;
   };
 
-  handleClientsNumber = async () => {
-    const {
-      clientNumber,
-      // averageDuration,
-      clientsOfDoctor1,
-      clientsOfDoctor2
-    } = this.state;
-
+  handleEnteredNumber = async () => {
     this.setState({
       noDataMessage: false
     });
@@ -84,8 +53,7 @@ class Client extends React.Component {
       filteredClientsByService
     );
 
-    const foundClient = this.findClientOnScreen(response);
-    console.log(foundClient);
+    const foundClient = this.findClientOnScreen(filteredClientsByService);
 
     if (foundClient.length === 0) {
       this.setState({
@@ -94,55 +62,41 @@ class Client extends React.Component {
       return;
     }
 
-    // const foundClient = response.filter(client => {
-    //   return (
-    //     client.id === Number(clientsNumber) && client.serviceProvided === "no"
-    //   );
-    // });
-    // console.log(foundClient.length);
-
-    // if (foundClient.length === 0) {
-    //   this.setState({
-    //     noDataMessage: true
-    //   });
-    //   return;
-    // }
-
     const clientId = foundClient[0].id;
     const selectedDoctor = foundClient[0].selectedDoctor;
-    // this.setState({
-    //   selectedDoctor
-    // });
+    const clientIndex = getClientIndex(
+      clientId,
+      filteredClientsByDoctor[selectedDoctor],
+      "id"
+    );
+    this.setState({
+      selectedDoctor,
+      clientIndex
+    });
+  };
 
-    const averageDuration = localStorage.getItem(selectedDoctor);
+  renderTimeLeft = () => {
+    const { noDataMessage, averageDuration, clientIndex } = this.state;
 
-    if (selectedDoctor === "doctor1") {
-      const clientIndex = this.getClientIndex(
-        clientId,
-        filteredClientsByDoctor.doctor1,
-        "id"
-      );
-      console.log("avergae duration of docotr1", averageDuration);
-      this.setState({
-        timeLeft: averageDuration * clientIndex
-        //averageDuration
-      });
-    } else {
-      const clientIndex = this.getClientIndex(
-        clientId,
-        filteredClientsByDoctor.doctor2,
-        "id"
-      );
-      console.log("avergae duration of docotr2", averageDuration);
-      this.setState({
-        timeLeft: averageDuration * clientIndex
-      });
-    }
+    const waitingTime = averageDuration * clientIndex;
+    const roundedWaitingTime = Math.round(waitingTime);
+
+    return (
+      <Fragment>
+        {(noDataMessage || roundedWaitingTime > 0) && (
+          <Message>
+            <Message.Header>
+              {noDataMessage
+                ? "Client was not found"
+                : `Your appointment is in ${roundedWaitingTime} min`}
+            </Message.Header>
+          </Message>
+        )}
+      </Fragment>
+    );
   };
 
   render() {
-    const { timeLeft, clientIndex, noDataMessage } = this.state;
-
     return (
       <Container>
         <Form>
@@ -150,23 +104,14 @@ class Client extends React.Component {
             <label>Enter Your Number</label>
             <input
               placeholder="Your number"
-              onChange={e => this.setState({ clientsNumber: e.target.value })}
+              onChange={e => this.setState({ clientNumber: e.target.value })}
             />
           </Form.Field>
-          <Button onClick={this.handleClientsNumber} type="submit">
+          <Button onClick={this.handleEnteredNumber} type="submit">
             Submit
           </Button>
         </Form>
-
-        {/* {timeLeft !== null && (
-          <Message>
-            <Message.Header>
-              Your appointment is in {Math.round(timeLeft)} min.
-            </Message.Header>
-          </Message>
-        )} */}
-        {/* {timeLeft && timeLeft} */}
-        {noDataMessage ? "No data" : timeLeft && timeLeft}
+        {this.renderTimeLeft()}
       </Container>
     );
   }

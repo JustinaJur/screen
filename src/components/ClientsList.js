@@ -8,12 +8,7 @@ class ClientsList extends React.Component {
   state = {
     clientsOfDoctor1: null,
     clientsOfDoctor2: null,
-    isNoDataMessageVisible: false,
-    averageDurationDoctor1: 1,
-    averageDurationDoctor2: 1,
-    allClients: []
-    // unservedClientsDoctor1: [],
-    // unservedClientsDoctor2: []
+    isNoDataMessageVisible: false
   };
 
   componentDidMount() {
@@ -22,7 +17,6 @@ class ClientsList extends React.Component {
 
   getClientsData = async () => {
     const response = await getAllClients();
-    console.log(response);
 
     const filteredClientsByService = filterClientsByService(response, "no");
 
@@ -70,7 +64,6 @@ class ClientsList extends React.Component {
       filteredClientsByDoctor.doctor1
     );
 
-    console.log("averageDurationDoctor1", averageDurationDoctor1);
     this.saveAverageDurationtoLocalStorage("doctor1", averageDurationDoctor1);
 
     if (!filteredClientsByDoctor.doctor2) return;
@@ -79,7 +72,6 @@ class ClientsList extends React.Component {
       filteredClientsByDoctor.doctor2
     );
 
-    console.log("averageDurationDoctor2", averageDurationDoctor2);
     this.saveAverageDurationtoLocalStorage("doctor2", averageDurationDoctor2);
   };
 
@@ -116,7 +108,7 @@ class ClientsList extends React.Component {
                   .filter((client, index) => client.serviceProvided === "no")
                   .map((client, index) => {
                     return (
-                      <Table.Body>
+                      <Table.Body key={client.id}>
                         <Table.Row className={index === 0 ? "active" : ""}>
                           <Table.Cell> {client.name}</Table.Cell>
                           <Table.Cell> {client.id}</Table.Cell>

@@ -1,16 +1,13 @@
-import React, { Fragment } from "react";
-import { groupBy } from "lodash";
+import React from "react";
 import { Container, Table, Accordion, Icon, Button } from "semantic-ui-react";
 
 import { getAllClients, deleteClient, updateClient } from "../data/api";
-import ClientsTable from "../components/ClientsTable";
-import { doctorsOptions } from "../data/doctorsOptions";
+import { filterClientsByDoctor } from "../utils/utils.js";
 
 class Doctor extends React.Component {
   state = {
     clientsOfDoctor1: [],
     clientsOfDoctor2: [],
-    distinctDoctors: [],
     clientsByDoctor: "",
     activeIndex: 0
   };
@@ -30,13 +27,15 @@ class Doctor extends React.Component {
   onDeleteClient = async e => {
     const response = await deleteClient(e.target.id);
 
+    if (!response) return;
+
     this.getClientsData();
   };
 
   getClientsData = async () => {
     const response = await getAllClients();
 
-    const clientsByDoctor = groupBy(response, item => item.selectedDoctor);
+    const clientsByDoctor = filterClientsByDoctor(response);
 
     this.setState({
       clientsOfDoctor1: clientsByDoctor.doctor1,
@@ -51,13 +50,11 @@ class Doctor extends React.Component {
   };
 
   countAverageAppointmentDuration = response => {
-    console.log(response);
-
     const filteredDoctor1 = response.filter(
       client =>
         client.selectedDoctor === "doctor1" && client.serviceProvided === "yes"
     );
-    console.log(filteredDoctor1);
+
     const averageDurationDoctor1 =
       filteredDoctor1
         .map(client => client.appointmentDuration)
@@ -66,7 +63,7 @@ class Doctor extends React.Component {
     this.setState({
       averageDurationDoctor1
     });
-    console.log(averageDurationDoctor1);
+
     this.saveAverageDurationtoLocalStorage("doctor1", averageDurationDoctor1);
 
     const filteredDoctor2 = response.filter(
@@ -83,11 +80,7 @@ class Doctor extends React.Component {
       averageDurationDoctor2
     });
     this.saveAverageDurationtoLocalStorage("doctor2", averageDurationDoctor2);
-    console.log(averageDurationDoctor2);
   };
-  ////////////////////////////////////////////////////////
-
-  //////////////////////////////////////////////////////////
 
   onUpdateClient = async (
     event,
@@ -96,8 +89,6 @@ class Doctor extends React.Component {
     selectedDoctor,
     registrationIn
   ) => {
-    //const appointmentDuration = this.countAppointmentDuration(registrationIn);
-
     const registrationDate = new Date().toISOString().slice(0, 10);
     const registrationTime = new Date().toLocaleTimeString(navigator.language, {
       hour: "2-digit",
@@ -122,11 +113,12 @@ class Doctor extends React.Component {
 
     const response = await updateClient(event.target.id, clientData);
 
+    if (!response) return;
+
     this.getClientsData();
   };
 
   renderDoctorClients = doctor => {
-    console.log(doctor);
     return (
       <Table>
         <Table.Header>
@@ -143,7 +135,7 @@ class Doctor extends React.Component {
         </Table.Header>
         {doctor.map((client, index) => {
           return (
-            <Table.Body>
+            <Table.Body key={client.id}>
               <Table.Row>
                 <Table.Cell textAlign="center">{client.id}</Table.Cell>
                 <Table.Cell textAlign="center">{client.name}</Table.Cell>
@@ -182,7 +174,7 @@ class Doctor extends React.Component {
                     basic
                     color="grey"
                     id={client.id}
-                    onClick={event => this.onDeleteClient(event)}
+                    onClick={this.onDeleteClient()}
                   >
                     Delete
                   </Button>
@@ -196,58 +188,10 @@ class Doctor extends React.Component {
   };
 
   render() {
-    const {
-      clientsOfDoctor1,
-      clientsOfDoctor2,
-      distinctDoctors,
-      clientsByDoctor
-    } = this.state;
-    console.log(this.state);
-    console.log(clientsByDoctor.doctor1);
-    console.log(clientsByDoctor.doctor2);
-    const { activeIndex } = this.state;
-    // const rootPanels = [
-    //   {
-    //     key: "panel-1",
-    //     title: "Doctor1",
-    //     content: {
-    //       content: (
-    //         <Fragment>
-    //           {clientsOfDoctor1 && this.renderDoctorClients(clientsOfDoctor1)}
-
-    //           {/* <ClientsTable
-    //               //     doctor={clientsOfDoctor1}
-    //               //     onDeleteClient={this.onDeleteClient}
-    //               //     onUpdateClient={event =>
-    //               //       this
-    //               //         .onUpdateClient
-    //               //         event
-    //               //         client.name,
-    //               //         client.surname,
-    //               //         client.selectedDoctor,
-    //               //         client.registrationIn
-    //               //         ()
-    //               //     }
-    //               ///> */}
-    //         </Fragment>
-    //       )
-    //     }
-    //   },
-    //   {
-    //     key: "panel-2",
-    //     title: "Doctor2",
-    //     content: (
-    //       <Fragment>
-    //         {clientsOfDoctor2 && this.renderDoctorClients(clientsOfDoctor2)}
-    //       </Fragment>
-    //     )
-    //   }
-    // ];
+    const { clientsOfDoctor1, clientsOfDoctor2, activeIndex } = this.state;
 
     return (
       <Container>
-        {/* <Accordion defaultActiveIndex={1} panels={rootPanels} /> */}
-
         <Accordion>
           <Accordion.Title
             active={activeIndex === 0}
@@ -272,8 +216,6 @@ class Doctor extends React.Component {
             {clientsOfDoctor2 && this.renderDoctorClients(clientsOfDoctor2)}
           </Accordion.Content>
         </Accordion>
-
-        {/* {this.renderDoctorClients(clientsOfDoctor1)} */}
       </Container>
     );
   }

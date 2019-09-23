@@ -14,6 +14,8 @@ import { doctorsOptions } from "../data/doctorsOptions";
 
 class Administration extends React.Component {
   state = {
+    name: "",
+    surname: "",
     clientsOfDoctor1: [],
     clientsOfDoctor2: [],
     selectedDoctor: null,
@@ -32,24 +34,6 @@ class Administration extends React.Component {
     this.setState({
       clientsOfDoctor1: clientsByDoctor.doctor1,
       clientsOfDoctor2: clientsByDoctor.doctor2
-    });
-  };
-
-  handleNameChange = event => {
-    this.setState({
-      name: event.target.value
-    });
-  };
-
-  handleSurnameChange = event => {
-    this.setState({
-      surname: event.target.value
-    });
-  };
-
-  handleSelectedDoctor = event => {
-    this.setState({
-      selectedDoctor: event.target.textContent
     });
   };
 
@@ -110,16 +94,25 @@ class Administration extends React.Component {
             fluid
             selection
             options={doctorsOptions}
-            onChange={this.handleSelectedDoctor}
+            onChange={e =>
+              this.setState({ selectedDoctor: e.target.textContent })
+            }
+          />
+        </Form.Field>
+
+        <Form.Field>
+          <label>First Name</label>
+          <input
+            placeholder="First Name"
+            onChange={e => this.setState({ name: e.target.value })}
           />
         </Form.Field>
         <Form.Field>
-          <label>First Name</label>
-          <input placeholder="First Name" onChange={this.handleNameChange} />
-        </Form.Field>
-        <Form.Field>
           <label>Last Name</label>
-          <input placeholder="Last Name" onChange={this.handleSurnameChange} />
+          <input
+            placeholder="Last Name"
+            onChange={e => this.setState({ surname: e.target.value })}
+          />
         </Form.Field>
         <Button onClick={this.onSubmitNewClient} primary>
           Add client
