@@ -174,7 +174,7 @@ class Doctor extends React.Component {
                     basic
                     color="grey"
                     id={client.id}
-                    onClick={this.onDeleteClient()}
+                    onClick={event => this.onDeleteClient(event)}
                   >
                     Delete
                   </Button>
