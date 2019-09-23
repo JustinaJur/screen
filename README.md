@@ -1,7 +1,7 @@
 ## HOW TO RUN THE APP
 
-From folder screen run in terminal npm start.<br>
-To start a server from folder Api run npm start.
+From folder "screen" run in terminal npm start.<br>
+To start a server from folder "api" run npm start.
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
