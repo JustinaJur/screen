@@ -1,105 +1,147 @@
 import React from "react";
 import { Button, Form, Container, Message } from "semantic-ui-react";
+import { groupBy, filter } from "lodash";
 
 import { getAllClients } from "../data/api";
+import {
+  filterClientsByService,
+  filterClientsByDoctor,
+  getClientIndex
+} from "../utils/utils";
 
 class Client extends React.Component {
   state = {
-    clientsNumber: null,
+    clientNumber: null,
     timeLeft: null,
     // averageDuration: 5,
     clientIndex: "",
-    doctor1: [],
-    doctor2: [],
+    clientsOfDoctor1: [],
+    clientsOfDoctor2: [],
     selectedDoctor: "",
-    averageDuration: 23
+    noDataMessage: false
+    //averageDuration: 0
   };
 
-  componentDidMount() {
-    // const i = this.state.clientIndex === 0 ? 1 : this.state.clientIndex;
+  // componentDidMount() {
+  //   // const i = this.state.clientIndex === 0 ? 1 : this.state.clientIndex;
 
-    console.log(this.state.averageDuration);
-    console.log(this.state.clientIndex);
-    this.interval = setInterval(
-      () =>
-        this.setState({
-          timeLeft: this.state.averageDuration * this.state.clientIndex
-        }),
-      5000
-    );
-  }
+  //   console.log(this.state.averageDuration);
+  //   console.log(this.state.clientIndex);
+  //   this.interval = setInterval(
+  //     () =>
+  //       this.setState({
+  //         timeLeft: this.state.averageDuration * this.state.clientIndex
+  //       }),
+  //     5000
+  //   );
+  // }
 
-  componentWillUnmount() {
-    clearInterval(this.interval);
-  }
+  // componentWillUnmount() {
+  //   clearInterval(this.interval);
+  // }
 
-  getClientIndex = (value, array, propertyName) => {
-    for (let index = 0; index < array.length; index++) {
-      if (Number(array[index][propertyName]) === Number(value)) {
-        console.log("index", index);
-        // this.setState({
-        //   clientIndex: index
-        // });
+  // getClientIndex = (value, array, propertyName) => {
+  //   for (let index = 0; index < array.length; index++) {
+  //     if (array[index][propertyName] === value) {
+  //       console.log("index", index);
+  //       return index;
+  //     }
+  //   }
+  //   console.log("nera tokio");
+  //   return -1;
+  // };
 
-        //console.log(array.toString());
-        const averageDuration = localStorage.getItem(this.state.selectedDoctor);
+  findClientOnScreen = data => {
+    const { clientNumber } = this.state;
 
-        console.log("avergae duration of docotr", averageDuration);
-
-        this.setState({
-          timeLeft: averageDuration * index,
-          averageDuration
-        });
-        console.log(this.state.timeLeft);
-        console.log(this.state);
-      }
-    }
-    console.log("nera tokio");
-    return -1;
+    const foundClient = data.filter(client => {
+      return (
+        client.id === Number(clientNumber) && client.serviceProvided === "no"
+      );
+    });
+    console.log(foundClient);
+    return foundClient;
   };
 
   handleClientsNumber = async () => {
-    const { clientsNumber, averageDuration, doctor1, doctor2 } = this.state;
+    const {
+      clientNumber,
+      // averageDuration,
+      clientsOfDoctor1,
+      clientsOfDoctor2
+    } = this.state;
 
+    this.setState({
+      noDataMessage: false
+    });
     const response = await getAllClients();
 
     if (!response) return;
 
-    this.setState({
-      doctor1: response.filter(
-        client =>
-          client.selectedDoctor === "doctor1" && client.serviceProvided == "no"
-      ),
-      doctor2: response.filter(
-        client =>
-          client.selectedDoctor === "doctor2" && client.serviceProvided == "no"
-      )
-    });
+    const filteredClientsByService = filterClientsByService(response, "no");
 
-    const filteredClient = response.filter(client => {
-      return (
-        client.id === Number(clientsNumber) && client.serviceProvided === "no"
-      );
-    });
+    const filteredClientsByDoctor = filterClientsByDoctor(
+      filteredClientsByService
+    );
 
-    if (!filteredClient) {
+    const foundClient = this.findClientOnScreen(response);
+    console.log(foundClient);
+
+    if (foundClient.length === 0) {
+      this.setState({
+        noDataMessage: true
+      });
       return;
     }
-    const clientId = filteredClient[0].id;
-    const clientDoctor = filteredClient[0].selectedDoctor;
-    this.setState({
-      selectedDoctor: clientDoctor
-    });
 
-    if (clientDoctor === "doctor1") {
-      this.getClientIndex(clientId, this.state.doctor1, "id");
+    // const foundClient = response.filter(client => {
+    //   return (
+    //     client.id === Number(clientsNumber) && client.serviceProvided === "no"
+    //   );
+    // });
+    // console.log(foundClient.length);
+
+    // if (foundClient.length === 0) {
+    //   this.setState({
+    //     noDataMessage: true
+    //   });
+    //   return;
+    // }
+
+    const clientId = foundClient[0].id;
+    const selectedDoctor = foundClient[0].selectedDoctor;
+    // this.setState({
+    //   selectedDoctor
+    // });
+
+    const averageDuration = localStorage.getItem(selectedDoctor);
+
+    if (selectedDoctor === "doctor1") {
+      const clientIndex = this.getClientIndex(
+        clientId,
+        filteredClientsByDoctor.doctor1,
+        "id"
+      );
+      console.log("avergae duration of docotr1", averageDuration);
+      this.setState({
+        timeLeft: averageDuration * clientIndex
+        //averageDuration
+      });
     } else {
-      this.getClientIndex(clientId, doctor2, "id");
+      const clientIndex = this.getClientIndex(
+        clientId,
+        filteredClientsByDoctor.doctor2,
+        "id"
+      );
+      console.log("avergae duration of docotr2", averageDuration);
+      this.setState({
+        timeLeft: averageDuration * clientIndex
+      });
     }
   };
 
   render() {
-    const { timeLeft, clientIndex } = this.state;
+    const { timeLeft, clientIndex, noDataMessage } = this.state;
 
     return (
       <Container>
@@ -116,13 +158,15 @@ class Client extends React.Component {
           </Button>
         </Form>
 
-        {timeLeft !== null && (
+        {/* {timeLeft !== null && (
           <Message>
             <Message.Header>
               Your appointment is in {Math.round(timeLeft)} min.
             </Message.Header>
           </Message>
-        )}
+        )} */}
+        {/* {timeLeft && timeLeft} */}
+        {noDataMessage ? "No data" : timeLeft && timeLeft}
       </Container>
     );
   }

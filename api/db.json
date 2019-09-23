@@ -1,84 +1,148 @@
 {
   "clients": [
     {
-      "name": "mmh",
-      "surname": "mhh",
+      "name": "gb",
+      "surname": "bg",
       "selectedDoctor": "doctor1",
-      "registrationIn": "2019-09-21 18:42",
-      "registrationOut": "2019-09-21 18:43",
-      "appointmentDuration": 1,
-      "serviceProvided": "yes",
-      "id": 1
-    },
-    {
-      "name": "mmhkkk",
-      "surname": "mhhkkk",
-      "selectedDoctor": "doctor1",
-      "registrationIn": "2019-09-21 18:42",
-      "registrationOut": "2019-09-21 18:43",
-      "appointmentDuration": 1,
+      "registrationIn": "2019-09-22 00:06",
+      "registrationOut": "2019-09-22 00:25",
+      "appointmentDuration": 19,
       "serviceProvided": "yes",
       "id": 2
     },
     {
-      "name": "as",
-      "surname": "mes",
-      "selectedDoctor": "doctor1",
-      "registrationIn": "2019-09-21 18:42",
-      "registrationOut": "2019-09-21 18:49",
-      "appointmentDuration": 7,
+      "name": "vdv",
+      "surname": "dvd",
+      "selectedDoctor": "doctor2",
+      "registrationIn": "2019-09-22 00:43",
+      "registrationOut": "2019-09-22 00:46",
+      "appointmentDuration": 3,
       "serviceProvided": "yes",
       "id": 3
     },
     {
-      "name": "asgg",
-      "surname": "mesggg",
+      "name": "vdv",
+      "surname": "dvd",
       "selectedDoctor": "doctor2",
-      "registrationIn": "2019-09-21 18:42",
-      "registrationOut": "2019-09-21 20:45",
-      "appointmentDuration": 123,
+      "registrationIn": "2019-09-22 00:43",
+      "registrationOut": "2019-09-22 00:47",
+      "appointmentDuration": 4,
       "serviceProvided": "yes",
       "id": 4
     },
     {
-      "name": "/;/",
-      "surname": "/;/;",
+      "name": " v ",
+      "surname": " v ",
       "selectedDoctor": "doctor1",
-      "registrationIn": "2019-09-21 18:49",
-      "serviceProvided": "no",
+      "registrationIn": "2019-09-22 00:44",
+      "registrationOut": "2019-09-23 11:33",
+      "appointmentDuration": 2089,
+      "serviceProvided": "yes",
       "id": 5
     },
     {
-      "name": "nhn",
-      "surname": "nhn",
-      "selectedDoctor": "doctor1",
-      "registrationIn": "2019-09-21 19:01",
-      "serviceProvided": "no",
+      "name": " v ",
+      "surname": " v v",
+      "selectedDoctor": "doctor2",
+      "registrationIn": "2019-09-22 00:45",
+      "registrationOut": "2019-09-23 10:08",
+      "appointmentDuration": 2003,
+      "serviceProvided": "yes",
       "id": 6
     },
     {
-      "name": ",k,",
-      "surname": ",kk",
+      "name": "kjuyk",
+      "surname": "kuku",
       "selectedDoctor": "doctor2",
-      "registrationIn": "2019-09-21 20:18",
-      "serviceProvided": "no",
+      "registrationIn": "2019-09-22 00:57",
+      "registrationOut": "2019-09-23 11:33",
+      "appointmentDuration": 2076,
+      "serviceProvided": "yes",
       "id": 7
     },
     {
-      "name": "k,k",
-      "surname": ",k,k",
+      "name": "kjuyk",
+      "surname": "kuku",
       "selectedDoctor": "doctor1",
-      "registrationIn": "2019-09-21 20:18",
-      "serviceProvided": "no",
+      "registrationIn": "2019-09-22 00:57",
+      "registrationOut": "2019-09-23 11:38",
+      "appointmentDuration": 2081,
+      "serviceProvided": "yes",
       "id": 8
     },
     {
-      "name": "tomas",
-      "surname": "batonas",
+      "name": "mju",
+      "surname": "mumu",
       "selectedDoctor": "doctor2",
-      "registrationIn": "2019-09-21 20:18",
+      "registrationIn": "2019-09-22 00:57",
       "serviceProvided": "no",
       "id": 9
+    },
+    {
+      "name": "fdfr",
+      "surname": "frefe",
+      "selectedDoctor": "doctor1",
+      "registrationIn": "2019-09-23 10:07",
+      "registrationOut": "2019-09-23 11:00",
+      "appointmentDuration": 53,
+      "serviceProvided": "yes",
+      "id": 10
+    },
+    {
+      "name": ".l.",
+      "surname": ".l.",
+      "selectedDoctor": "doctor1",
+      "registrationIn": "2019-09-23 11:16",
+      "serviceProvided": "no",
+      "id": 11
+    },
+    {
+      "name": "jus",
+      "surname": "ggrg",
+      "selectedDoctor": "doctor2",
+      "registrationIn": "2019-09-23 11:38",
+      "serviceProvided": "no",
+      "id": 12
+    },
+    {
+      "name": "nhnhn",
+      "surname": "nhnhn",
+      "selectedDoctor": "doctor2",
+      "registrationIn": "2019-09-23 11:38",
+      "serviceProvided": "no",
+      "id": 13
+    },
+    {
+      "name": "nhnhn",
+      "surname": "nhnhn",
+      "selectedDoctor": "doctor1",
+      "registrationIn": "2019-09-23 11:38",
+      "serviceProvided": "no",
+      "id": 14
+    },
+    {
+      "name": "nhnhn",
+      "surname": "nhnhn",
+      "selectedDoctor": "doctor2",
+      "registrationIn": "2019-09-23 11:38",
+      "serviceProvided": "no",
+      "id": 15
+    },
+    {
+      "name": "nhnhn",
+      "surname": "nhnhn",
+      "selectedDoctor": "doctor1",
+      "registrationIn": "2019-09-23 11:38",
+      "serviceProvided": "no",
+      "id": 16
+    },
+    {
+      "name": "nhnhn",
+      "surname": "nhnhn",
+      "selectedDoctor": "doctor2",
+      "registrationIn": "2019-09-23 11:38",
+      "serviceProvided": "no",
+      "id": 17
     }
   ]
 }

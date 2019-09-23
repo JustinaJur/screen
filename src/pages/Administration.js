@@ -1,22 +1,25 @@
-import React, { Fragment } from "react";
-import moment from "react-moment";
-import "moment-timezone";
-
-import { Dropdown, Container, Divider, Card, Message } from "semantic-ui-react";
+import React from "react";
+import { groupBy } from "lodash";
+import {
+  Dropdown,
+  Container,
+  Divider,
+  Message,
+  Form,
+  Button
+} from "semantic-ui-react";
 
 import { getAllClients, createNewClient } from "../data/api";
 import { doctorsOptions } from "../data/doctorsOptions";
 
 class Administration extends React.Component {
   state = {
-    name: "",
-    surname: "",
-    selectedDoctor: "doctor1",
-    fullNames: [],
-    doctor1: [],
-    doctor2: [],
+    clientsOfDoctor1: [],
+    clientsOfDoctor2: [],
+    selectedDoctor: null,
     isSuccessMessageVisible: false
   };
+
   componentDidMount() {
     this.getClientsData();
   }
@@ -24,9 +27,11 @@ class Administration extends React.Component {
   getClientsData = async () => {
     const response = await getAllClients();
 
+    const clientsByDoctor = groupBy(response, item => item.selectedDoctor);
+
     this.setState({
-      doctor1: response.doctor1,
-      doctor2: response.doctor2
+      clientsOfDoctor1: clientsByDoctor.doctor1,
+      clientsOfDoctor2: clientsByDoctor.doctor2
     });
   };
 
@@ -42,7 +47,7 @@ class Administration extends React.Component {
     });
   };
 
-  handleSelectedDoctor = (event, value) => {
+  handleSelectedDoctor = event => {
     this.setState({
       selectedDoctor: event.target.textContent
     });
@@ -51,21 +56,17 @@ class Administration extends React.Component {
   handleSuccessMessage = () => {
     setTimeout(() => {
       this.setState({ isSuccessMessageVisible: false });
-    }, 1000);
+    }, 1200);
   };
 
-  ///////////////////////////////////////////////////////////////////////////////////////////
-  onSaveInitialData = () => {
-    const { doctor1, doctor2 } = this.state;
+  onSaveCurrentClientsToLocalStorage = () => {
+    const { clientsOfDoctor1, clientsOfDoctor2 } = this.state;
 
-    localStorage.setItem("doctor1", JSON.stringify(doctor1));
-    localStorage.setItem("doctor2", JSON.stringify(doctor2));
+    localStorage.setItem("doctor1", JSON.stringify(clientsOfDoctor1));
+    localStorage.setItem("doctor2", JSON.stringify(clientsOfDoctor2));
   };
 
-  onSubmitNewClient = async e => {
-    e.preventDefault();
-    const { name, surname, selectedDoctor } = this.state;
-
+  countRegistrationInTime = () => {
     const registrationDate = new Date().toISOString().slice(0, 10);
     const registrationTime = new Date().toLocaleTimeString(navigator.language, {
       hour: "2-digit",
@@ -73,7 +74,17 @@ class Administration extends React.Component {
     });
     const registrationIn = `${registrationDate} ${registrationTime}`;
 
-    if (!name || !surname) return;
+    return registrationIn;
+  };
+
+  onSubmitNewClient = async e => {
+    e.preventDefault();
+    const { name, surname, selectedDoctor } = this.state;
+
+    const registrationIn = this.countRegistrationInTime();
+
+    if (!name || !surname || !selectedDoctor) return;
+
     const response = await createNewClient(
       name,
       surname,
@@ -87,70 +98,53 @@ class Administration extends React.Component {
       });
       this.handleSuccessMessage();
     }
-    console.log(response);
-    // localStorage.setItem("user", JSON.stringify(person));
+  };
+
+  renderRegistrationForm = () => {
+    return (
+      <Form>
+        <Form.Field>
+          <label>Select a Doctor</label>
+          <Dropdown
+            placeholder="Select a Doctor"
+            fluid
+            selection
+            options={doctorsOptions}
+            onChange={this.handleSelectedDoctor}
+          />
+        </Form.Field>
+        <Form.Field>
+          <label>First Name</label>
+          <input placeholder="First Name" onChange={this.handleNameChange} />
+        </Form.Field>
+        <Form.Field>
+          <label>Last Name</label>
+          <input placeholder="Last Name" onChange={this.handleSurnameChange} />
+        </Form.Field>
+        <Button onClick={this.onSubmitNewClient} primary>
+          Add client
+        </Button>
+      </Form>
+    );
   };
 
   render() {
     const { isSuccessMessageVisible } = this.state;
-    // const currentDate = moment();
-    // console.log(currentDate);
 
     return (
       <Container>
+        {this.renderRegistrationForm()}
+        <Divider horizontal />
+        <Button secondary onClick={this.onSaveCurrentClientsToLocalStorage}>
+          Save clients to LocalStorage
+        </Button>
+        <Divider horizontal />
         {isSuccessMessageVisible && (
           <Message
             success
             header="The client has been registered successfully"
           />
         )}
-
-        <form class="ui form">
-          <div class="field">
-            <label>Select a Doctor</label>
-            <Dropdown
-              placeholder="Select a Doctor"
-              fluid
-              selection
-              options={doctorsOptions}
-              onChange={this.handleSelectedDoctor}
-            />
-          </div>
-          <div class="field">
-            <label>First Name</label>
-            <input placeholder="First Name" onChange={this.handleNameChange} />
-          </div>
-          <div class="field">
-            <label>Last Name</label>
-            <input
-              placeholder="Last Name"
-              onChange={this.handleSurnameChange}
-            />
-          </div>
-          <button
-            class="ui button primary"
-            type="submit"
-            onClick={this.onSubmitNewClient}
-          >
-            Add client
-          </button>
-        </form>
-        <Divider horizontal />
-        <button
-          class="ui button secondary"
-          type="submit"
-          onClick={this.onSaveInitialData}
-        >
-          Save initial data to localStorage
-        </button>
-        <Divider horizontal />
-        <button
-          class="ui button secondary"
-          type="submit"
-          onClick={this.onSaveAllData}
-        >
-          Save all data to localStorage
-        </button>
       </Container>
     );
   }

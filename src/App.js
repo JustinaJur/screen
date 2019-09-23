@@ -11,18 +11,16 @@ import Administration from "./pages/Administration";
 class App extends React.Component {
   render() {
     return (
-      <div className="App">
-        <BrowserRouter>
-          <Navigation />
-          <Switch>
-            <Route exact path="/" component={Administration} />
-            <Route exact path="/Screen" component={Screen} />
-            <Route exact path="/Doctor" component={Doctor} />
-            <Route exact path="/Client" component={Client} />
-            <Route component={Page404} />
-          </Switch>
-        </BrowserRouter>
-      </div>
+      <BrowserRouter>
+        <Navigation />
+        <Switch>
+          <Route exact path="/" component={Administration} />
+          <Route exact path="/Screen" component={Screen} />
+          <Route exact path="/Doctor" component={Doctor} />
+          <Route exact path="/Client" component={Client} />
+          <Route component={Page404} />
+        </Switch>
+      </BrowserRouter>
     );
   }
 }

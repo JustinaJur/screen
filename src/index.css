@@ -12,25 +12,7 @@ code {
     monospace;
 }
 
-.highlighted {
-  background: pink;
-}
-
-/* .outer {
-  overflow: hidden;
-  width: 200px;
-  height: 400px;
-  border: 1px solid #ccc;
-} */
-
-/* ::-webkit-scrollbar {
-  display: none;
-} */
-
-.outer::-webkit-scrollbar {
-  display: none;
-}
-html {
-  overflow: scroll;
-  overflow-y: hidden;
+.modals {
+  background-color: black !important;
+  overflow: hidden !important;
 }

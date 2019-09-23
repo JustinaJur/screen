@@ -1,28 +1,16 @@
 import React, { Fragment } from "react";
-import Moment from "react-moment";
-import moment from "react-moment";
-import "moment-timezone";
-import {
-  Dropdown,
-  Container,
-  Divider,
-  Card,
-  Message,
-  List,
-  Table,
-  Modal,
-  Button
-} from "semantic-ui-react";
+import { Container, Table } from "semantic-ui-react";
 
 import { getAllClients } from "../data/api";
+import { filterClientsByService, filterClientsByDoctor } from "../utils/utils";
 
 class ClientsList extends React.Component {
   state = {
-    clientsOfDoctor1: [],
-    clientsOfDoctor2: [],
+    clientsOfDoctor1: null,
+    clientsOfDoctor2: null,
     isNoDataMessageVisible: false,
-    averageDurationDoctor1: 0,
-    averageDurationDoctor2: 0,
+    averageDurationDoctor1: 1,
+    averageDurationDoctor2: 1,
     allClients: []
     // unservedClientsDoctor1: [],
     // unservedClientsDoctor2: []
@@ -36,68 +24,68 @@ class ClientsList extends React.Component {
     const response = await getAllClients();
     console.log(response);
 
+    const filteredClientsByService = filterClientsByService(response, "no");
+
+    const filteredClientsByDoctor = filterClientsByDoctor(
+      filteredClientsByService
+    );
+
     this.setState({
-      allClients: response
+      clientsOfDoctor1: filteredClientsByDoctor.doctor1,
+      clientsOfDoctor2: filteredClientsByDoctor.doctor2
     });
+
+    this.handleAverageAppointmentDuration(response);
 
     if (!response)
       this.setState({
         isNoDataMessageVisible: true
       });
-
-    this.setState({
-      clientsOfDoctor1: response.filter(
-        doctor => doctor.selectedDoctor === "doctor1"
-      ),
-      clientsOfDoctor2: response.filter(
-        doctor => doctor.selectedDoctor === "doctor2"
-      )
-    });
-    this.countAverageAppointmentDuration(response);
   };
 
   saveAverageDurationtoLocalStorage = (doctor, duration) => {
     localStorage.setItem(doctor, JSON.stringify(duration));
   };
 
-  countAverageAppointmentDuration = response => {
-    console.log(response);
-
-    const filteredDoctor1 = response.filter(
-      client =>
-        client.selectedDoctor === "doctor1" && client.serviceProvided === "yes"
-    );
-    console.log(filteredDoctor1);
-    const averageDurationDoctor1 =
-      filteredDoctor1
+  countAverageAppointmentDuration = clientsByDoctor => {
+    const averageDuration =
+      clientsByDoctor
         .map(client => client.appointmentDuration)
         .reduce((total, current) => total + current, 0) /
-      filteredDoctor1.length;
-    this.setState({
-      averageDurationDoctor1
-    });
-    console.log(averageDurationDoctor1);
+      clientsByDoctor.length;
+
+    return averageDuration;
+  };
+
+  handleAverageAppointmentDuration = response => {
+    const filteredClientsByService = filterClientsByService(response, "yes");
+
+    const filteredClientsByDoctor = filterClientsByDoctor(
+      filteredClientsByService
+    );
+
+    if (!filteredClientsByDoctor.doctor1) return;
+
+    const averageDurationDoctor1 = this.countAverageAppointmentDuration(
+      filteredClientsByDoctor.doctor1
+    );
+
+    console.log("averageDurationDoctor1", averageDurationDoctor1);
     this.saveAverageDurationtoLocalStorage("doctor1", averageDurationDoctor1);
 
-    const filteredDoctor2 = response.filter(
-      client =>
-        client.selectedDoctor === "doctor2" && client.serviceProvided === "yes"
+    if (!filteredClientsByDoctor.doctor2) return;
+
+    const averageDurationDoctor2 = this.countAverageAppointmentDuration(
+      filteredClientsByDoctor.doctor2
     );
 
-    const averageDurationDoctor2 =
-      filteredDoctor2
-        .map(client => client.appointmentDuration)
-        .reduce((total, current) => total + current, 0) /
-      filteredDoctor1.length;
-    this.setState({
-      averageDurationDoctor2
-    });
+    console.log("averageDurationDoctor2", averageDurationDoctor2);
     this.saveAverageDurationtoLocalStorage("doctor2", averageDurationDoctor2);
-    console.log(averageDurationDoctor2);
   };
 
   countWaitingTime = (client, index) => {
-    const { averageDurationDoctor1, averageDurationDoctor2 } = this.state;
+    const averageDurationDoctor1 = localStorage.getItem("doctor1");
+    const averageDurationDoctor2 = localStorage.getItem("doctor2");
 
     const waitingTime =
       client.selectedDoctor === "doctor1"
@@ -118,25 +106,28 @@ class ClientsList extends React.Component {
                   <Table.HeaderCell>Name</Table.HeaderCell>
                   <Table.HeaderCell>Number</Table.HeaderCell>
                   <Table.HeaderCell>Doctor</Table.HeaderCell>
-                  <Table.HeaderCell>Waiting time in minutes</Table.HeaderCell>
+                  <Table.HeaderCell textAlign="center">
+                    Waiting time in minutes
+                  </Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
-              {clientsOfDoctor
-                .filter((client, index) => client.serviceProvided === "no")
-                .map((client, index) => {
-                  return (
-                    <Table.Body>
-                      <Table.Row className={index === 0 ? "active" : ""}>
-                        <Table.Cell> {client.name}</Table.Cell>
-                        <Table.Cell>No. {client.id}</Table.Cell>
-                        <Table.Cell>{client.selectedDoctor}</Table.Cell>
-                        <Table.Cell>
-                          {this.countWaitingTime(client, index)}
-                        </Table.Cell>
-                      </Table.Row>
-                    </Table.Body>
-                  );
-                })}
+              {clientsOfDoctor &&
+                clientsOfDoctor
+                  .filter((client, index) => client.serviceProvided === "no")
+                  .map((client, index) => {
+                    return (
+                      <Table.Body>
+                        <Table.Row className={index === 0 ? "active" : ""}>
+                          <Table.Cell> {client.name}</Table.Cell>
+                          <Table.Cell> {client.id}</Table.Cell>
+                          <Table.Cell>{client.selectedDoctor}</Table.Cell>
+                          <Table.Cell textAlign="center">
+                            {this.countWaitingTime(client, index)}
+                          </Table.Cell>
+                        </Table.Row>
+                      </Table.Body>
+                    );
+                  })}
             </Table>
           </Container>
         </div>
