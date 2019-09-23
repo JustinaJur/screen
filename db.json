@@ -67,14 +67,6 @@
       "registrationIn": "2019-09-23 00:22",
       "serviceProvided": "no",
       "id": 8
-    },
-    {
-      "name": " naujas",
-      "surname": "kitas",
-      "selectedDoctor": "doctor1",
-      "registrationIn": "2019-09-23 00:44",
-      "serviceProvided": "no",
-      "id": 9
     }
   ]
 }
